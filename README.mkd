@@ -3,16 +3,19 @@ Reasonning on RDF with [ASP](https://en.wikipedia.org/wiki/Answer_set_programmin
 
 
 ## Retrieve the data
-On [bioportal](http://bioportal.bioontology.org), the [ENVO ontology](http://bioportal.bioontology.org/ontologies/ENVO) provide a file in xrdf format.
-The data in file named**owlapi.xrdf** (2014-09-16 release) is used as primary source of data in examples.
+On [bioportal](http://bioportal.bioontology.org), the [ENVO ontology](http://bioportal.bioontology.org/ontologies/ENVO) provide a file in xrdf format. (2014-09-16 release) 
+The data in file named *owlapi.xrdf* is used as primary source of data in examples.
 
 
 ## Install requirements
 
     pip install -r requirements
+    
+Used implementation of ASP is gringo/clasp from [Potassco labs](http://potassco.sourceforge.net/).
+Some problems could appear when installing the `pyasp` package ; best solution is to follow the [PowerGrASP installing guide](https://github.com/Aluriak/PowerGrASP/blob/master/README.mkd#installation--requirements).
 
 
-## Play with data [optional]
+## Play with data [not really related to the package]
 Because we love numbers in quantity:
 
     from collections import Counter
@@ -30,14 +33,25 @@ Because we love numbers in quantity:
     # Counter({<class 'rdflib.term.URIRef'>: 89843, <class 'rdflib.term.Literal'>: 24166, <class 'rdflib.term.BNode'>: 18204})
 
 Well, that's a lot of blank nodes.
+Don't worry, GRASP kicks them out while converts them to ASP atoms.
 
 
-## do something more fun
+## Do something more fun
 
     make convert
     make query
 
 Give a look to the `Makefile`, and to the `grasp/__main__.py`.
+All the crunsh about package and python starts here.
+
+*grasp/solving.py* file is just the one that call the ASP solver on your data and your query.
+You can combine multiple queries and play with clingo/gringo/clasp arguments through the sources.
+
+From the ASP side, the query is defined in *queries/test.lp*. This location is sent as package parameter. (see `Makefile`)
+
+
+## Other detail
+CLI == API (with different naming, although)
 
 
 ## Licence
