@@ -4,7 +4,7 @@ Reasonning on RDF with [ASP](https://en.wikipedia.org/wiki/Answer_set_programmin
 
 ## Retrieve the data
 On [bioportal](http://bioportal.bioontology.org), the [ENVO ontology](http://bioportal.bioontology.org/ontologies/ENVO) provide a file in xrdf format.
-Once decompressed, **owlapi.xrdf** is used as primary source of data in examples.
+The data in file named**owlapi.xrdf** (2014-09-16 release) is used as primary source of data in examples.
 
 
 ## Install requirements
