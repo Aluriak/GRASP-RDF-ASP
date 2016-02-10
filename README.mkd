@@ -12,7 +12,7 @@ The data in file named**owlapi.xrdf** (2014-09-16 release) is used as primary so
     pip install -r requirements
 
 
-## Play with data
+## Play with data [optional]
 Because we love numbers in quantity:
 
     from collections import Counter
