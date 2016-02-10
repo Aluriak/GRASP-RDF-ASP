@@ -1,0 +1,8 @@
+venv
+*.pyc
+gringo
+clasp
+clingo
+*.vim
+asp_py_lextab.py
+asp_py_parsetab.py

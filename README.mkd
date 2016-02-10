@@ -1,0 +1,44 @@
+# Grasp Rdf in Answer Set Programming (GRASP)
+Reasonning on RDF with [ASP](https://en.wikipedia.org/wiki/Answer_set_programming) and Python. (not dinopython)
+
+
+## Retrieve the data
+On [bioportal](http://bioportal.bioontology.org), the [ENVO ontology](http://bioportal.bioontology.org/ontologies/ENVO) provide a file in xrdf format.
+Once decompressed, **owlapi.xrdf** is used as primary source of data in examples.
+
+
+## Install requirements
+
+    pip install -r requirements
+
+
+## Play with data
+Because we love numbers in quantity:
+
+    from collections import Counter
+    from rdflib import Graph
+
+    g = Graph()
+    g.parse('owlapi.xrdf')
+
+    # here are blank nodes, so easy to spot
+    print(next(p for p, _, _ in g if p.__class__ is rdflib.term.BNode))
+    # N835c4da381ad4ad983105cacfcde2a9a
+
+    # one struct to count them all
+    print(Counter(t.__class__ for items in g for t in items))
+    # Counter({<class 'rdflib.term.URIRef'>: 89843, <class 'rdflib.term.Literal'>: 24166, <class 'rdflib.term.BNode'>: 18204})
+
+Well, that's a lot of blank nodes.
+
+
+## do something more fun
+
+    make convert
+    make query
+
+Give a look to the `Makefile`, and to the `grasp/__main__.py`.
+
+
+## Licence
+[WTFPL](http://www.wtfpl.net/)
