@@ -1,7 +1,7 @@
 """
 RDF to ASP converting functions.
 
-Main API is rdffile_to_aspfile(3).
+Main API is rdffile_to_aspfile(3), and triplet_to_atom(1).
 
 """
 import rdflib
@@ -10,12 +10,10 @@ import rdflib
 UNWANTED_CHARS = set("\"'\n\r")
 
 
-def triplet_to_atom(triplet):
-    """Return given triplet as an ASP readable atom"""
-    return 'triplet("' + '","'.join(str(item) for item in triplet) + '").'
+# Follows various private methods definitions
 
 
-def humanized(triplet):
+def _humanized(triplet):
     """Return same triplet, human readable"""
     def uri_removed(item):
         if item.startswith('http:/'):
@@ -28,25 +26,33 @@ def humanized(triplet):
     )
 
 
-def is_blank(triplet):
+def _is_blank(triplet):
     """True if given triplet describes a blank node"""
     return any(item.__class__ is rdflib.term.BNode for item in triplet)
 
 
-def triplets_from_file(filename, no_blank=True):
+def _triplets_from_file(filename, no_blank=True):
     """Yield triplets found in RDF file of given filename"""
     return (triplet for triplet in rdflib.Graph().parse(filename)
-            if not is_blank(triplet))
+            if not _is_blank(triplet))
 
 
-def aspify(filename, end='\n', process=humanized):
+def _aspify(filename, end='\n', process=_humanized):
     """Yield processed triplets as ASP atoms, ended by end character"""
     yield from (triplet_to_atom(process(triplet)) + end
-                for triplet in triplets_from_file(filename))
+                for triplet in _triplets_from_file(filename))
 
 
-def rdffile_to_asp(input_filename, output_filename, atom_process=humanized):
+# Main API
+
+
+def triplet_to_atom(triplet):
+    """Return given triplet as an ASP readable atom"""
+    return 'triplet("' + '","'.join(str(item) for item in triplet) + '").'
+
+
+def file_to_file(input_filename, output_filename, atom_process=_humanized):
     """Put data in input_filename (RDF) in output_filename (ASP atoms)"""
     with open(output_filename, 'w') as of:
-        for atom in aspify(input_filename, process=atom_process):
+        for atom in _aspify(input_filename, process=atom_process):
             of.write(atom)
