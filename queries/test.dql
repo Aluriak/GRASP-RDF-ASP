@@ -1,0 +1,6 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?object ?relation ?subject
+WHERE {
+    <http://dbpedia.org/resource/Asturias> rdfs:label ?subject.
+    ?object ?relation ?subject.
+}
