@@ -31,4 +31,3 @@ def arg(atom):
 def answers(file_query, file_data):
     """Yield answers of RDF triplets found in data that answer the query"""
     return solving.model_from('', [file_query, file_data])
-
