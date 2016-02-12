@@ -7,6 +7,8 @@ usage:
 
 options:
     -h, --help      print this message
+    --append-asp    append the new data to local db instead of replace it
+    --keep-blanks   don't filter out triplets containing any blank data
 
 convert:
     Converts given RDF file in an ASP readable file.
@@ -31,16 +33,19 @@ from . import sparql
 
 if __name__ == '__main__':
     args = docopt(__doc__)
+    keep_prev_asp = options['--append-asp']
 
     if args['convert']:
         rdftoasp.file_to_file(args['<input_RDF_filename>'],
-                              args['<output_filename>'])
+                              args['<output_filename>'],
+                              erase_previous_data=keep_prev_asp)
 
     elif args['retrieve']:
         db_uri = args['<database_URI>']
         sparql_query = args['<input_SPARQL_query>']
         output_filename = args['<output_filename>']
-        with open(output_filename, 'w') as of, open(sparql_query) as qf:
+        of_mode = 'a' if keep_prev_asp else 'w'
+        with open(sparql_query) as qf, open(output_filename, of_mode) as of:
             for triplet in sparql.query(db_uri, qf.read()):
                 of.write(rdftoasp.triplet_to_atom(triplet))
 

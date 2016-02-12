@@ -13,7 +13,7 @@ UNWANTED_CHARS = set("\"'\n\r")
 # Follows various private methods definitions
 
 
-def _humanized(triplet):
+def humanized(triplet):
     """Return same triplet, human readable"""
     def uri_removed(item):
         if item.startswith('http:/'):
@@ -37,7 +37,7 @@ def _triplets_from_file(filename, no_blank=True):
             if not _is_blank(triplet))
 
 
-def _aspify(filename, end='\n', process=_humanized):
+def _aspify(filename, end='\n', process=humanized):
     """Yield processed triplets as ASP atoms, ended by end character"""
     yield from (triplet_to_atom(process(triplet)) + end
                 for triplet in _triplets_from_file(filename))
@@ -51,8 +51,10 @@ def triplet_to_atom(triplet):
     return 'triplet("' + '","'.join(str(item) for item in triplet) + '").'
 
 
-def file_to_file(input_filename, output_filename, atom_process=_humanized):
+def file_to_file(input_filename, output_filename, atom_process=humanized,
+                 erase_previous_data=True):
     """Put data in input_filename (RDF) in output_filename (ASP atoms)"""
-    with open(output_filename, 'w') as of:
+    of_mode = 'w' if erase_previous_data else 'a'
+    with open(output_filename, of_mode) as of:
         for atom in _aspify(input_filename, process=atom_process):
             of.write(atom)
