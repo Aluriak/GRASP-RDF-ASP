@@ -69,7 +69,7 @@ An interesting solution is to use a sparql query to define exactly which triplet
 
 This is perform with the `retrieve` API:
 
-    python -m grasp retrieve http://dbpedia.org/sparql mysparqlquery.sparql aspdatabase.lp
+    python -m grasp retrieve http://dbpedia.org/sparql mysparqlquery.rq aspdatabase.lp
 
 Note that the SPARQL query must select particular variables:
 

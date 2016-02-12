@@ -4,7 +4,7 @@ RDF_DATABASE=$(DATA_DIR)owlapi.xrdf
 ASP_DATABASE=$(DATA_DIR)rdf.lp
 ASP_QUERY=$(QUERY_DIR)test.lp
 DB_URI=http://dbpedia.org/sparql
-SPARQL_QUERY=$(QUERY_DIR)test.dql
+SPARQL_QUERY=$(QUERY_DIR)test.rq
 KEEP_ASP_DB=--append-asp
 KEEP_BLANKS=--keep-blanks
 
