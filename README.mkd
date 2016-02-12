@@ -2,38 +2,49 @@
 Reasonning on RDF with [ASP](https://en.wikipedia.org/wiki/Answer_set_programming) and Python. (not dinopython)
 
 
-## Retrieve the data
-On [bioportal](http://bioportal.bioontology.org), the [ENVO ontology](http://bioportal.bioontology.org/ontologies/ENVO) provide a file in xrdf format. (2014-09-16 release) 
-The data in file named *owlapi.xrdf* is used as primary source of data in examples.
+## Principles
+Grasp uses ASP for querying RDF data, allowing final user to code complex queries using a dedicated language.
+For optimisation, it can also perform SPARQL query.  (see below)
+
+There is three main entry point in grasp:
+- convert: convert local RDF data in ASP database
+- retrieve: retrieve RDF data from an RDF database through a SPARQL query and put it in local ASP database
+- query: perform an ASP query on a local ASP database
+
+
+## Motivation
+Grasp is a tool dedicated to reasonning on linked data in ASP, a language dedicated to logical programming
+(as prolog, well-known to be used by Watson and Robonaut for databases querying).
+
+Interest of ASP over SPARQL are:
+- usage of complex and configurable heuristics
+- native support of choice of subsets
+- optimisations of solutions scoring
+
+The used implementation of ASP is the [Potsdam Answer Set Solving Collection](http://potassco.sourceforge.net/index.html).
+
+## Limits
+ASP, oppositely to SPARQL, don't have a complex type systems: all values are string or integer.
+There is no builtin operation on string.
+Builtin operations on integers are the commons mathematic operators.
+
+The consequence is that many information, through ASP, is lost about types.
+With some treatments, some information can be saved, used in ASP and restored after query, but not much.
+
+
+## About the data sample used in example
+On [bioportal](http://bioportal.bioontology.org), the [ENVO ontology](http://bioportal.bioontology.org/ontologies/ENVO) provide a file in xrdf format. (2014-09-16 release)
+The data in file named `owlapi.xrdf` is used as primary source of data in examples.
+
+The goa data (`data/goa_ecoli-20150528-goUniprotUri.ttl`) was generated from GOA EBI, with the help of the script `liGoa2rdf.py`.
 
 
 ## Install requirements
 
     pip install -r requirements
-    
+
 Used implementation of ASP is gringo/clasp from [Potassco labs](http://potassco.sourceforge.net/).
 Some problems could appear when installing the `pyasp` package ; best solution is to follow the [PowerGrASP installing guide](https://github.com/Aluriak/PowerGrASP/blob/master/README.mkd#installation--requirements).
-
-
-## Play with data [not really related to the package]
-Because we love numbers in quantity:
-
-    from collections import Counter
-    from rdflib import Graph
-
-    g = Graph()
-    g.parse('owlapi.xrdf')
-
-    # here are blank nodes, so easy to spot
-    print(next(p for p, _, _ in g if p.__class__ is rdflib.term.BNode))
-    # N835c4da381ad4ad983105cacfcde2a9a
-
-    # one struct to count them all
-    print(Counter(t.__class__ for items in g for t in items))
-    # Counter({<class 'rdflib.term.URIRef'>: 89843, <class 'rdflib.term.Literal'>: 24166, <class 'rdflib.term.BNode'>: 18204})
-
-Well, that's a lot of blank nodes.
-Don't worry, GRASP kicks them out while converts them to ASP atoms.
 
 
 ## Do something more fun
@@ -44,14 +55,42 @@ Don't worry, GRASP kicks them out while converts them to ASP atoms.
 Give a look to the `Makefile`, and to the `grasp/__main__.py`.
 All the crunsh about package and python starts here.
 
-*grasp/solving.py* file is just the one that call the ASP solver on your data and your query.
+`grasp/solving.py` file is just the one that call the ASP solver on your data and your query.
 You can combine multiple queries and play with clingo/gringo/clasp arguments through the sources.
 
-From the ASP side, the query is defined in *queries/test.lp*. This location is sent as package parameter. (see `Makefile`)
+From the ASP side, the query is defined in `queries/test.lp`. This location is sent as package parameter. (see `Makefile`)
+
+
+## Retrieve and filtering data from big databases
+Because the ASP part needs complex treatment on the data (including grounding), it is expectable that, on big data,
+the ASP query will just explode in RAM (and, once swapped, in time).
+
+An interesting solution is to use a sparql query to define exactly which triplets really needs ASP.
+
+This is perform with the `retrieve` API:
+
+    python -m grasp retrieve http://dbpedia.org/sparql mysparqlquery.sparql aspdatabase.lp
+
+Note that the SPARQL query must select particular variables:
+
+    SELECT ?object ?relation ?subject
+    WHERE {
+        ...
+    }
+
+Where object, relation and subject describes a triplet that will be converted and pushed in the ASP database.
 
 
 ## Other detail
 CLI == API (with different naming, although)
+
+For help and options on the package:
+
+    python -m grasp --help
+
+or
+
+    make help
 
 
 ## Licence

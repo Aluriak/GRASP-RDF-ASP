@@ -31,16 +31,18 @@ def _is_blank(triplet):
     return any(item.__class__ is rdflib.term.BNode for item in triplet)
 
 
-def _triplets_from_file(filename, no_blank=True):
+def _triplets_from_file(filename, no_blank_nodes=False):
     """Yield triplets found in RDF file of given filename"""
-    return (triplet for triplet in rdflib.Graph().parse(filename)
-            if not _is_blank(triplet))
+    triplets = rdflib.Graph().parse(filename)
+    if no_blank_nodes:
+        triplets = (triplet for triplet in triplets if not _is_blank(triplet))
+    return triplets
 
 
-def _aspify(filename, end='\n', process=humanized):
+def _aspify(filename, process=humanized, keep_blank_nodes=False, end='\n'):
     """Yield processed triplets as ASP atoms, ended by end character"""
     yield from (triplet_to_atom(process(triplet)) + end
-                for triplet in _triplets_from_file(filename))
+                for triplet in _triplets_from_file(filename, keep_blank_nodes))
 
 
 # Main API
@@ -52,9 +54,9 @@ def triplet_to_atom(triplet):
 
 
 def file_to_file(input_filename, output_filename, atom_process=humanized,
-                 erase_previous_data=True):
+                 erase_previous_data=True, no_blank_nodes=False):
     """Put data in input_filename (RDF) in output_filename (ASP atoms)"""
     of_mode = 'w' if erase_previous_data else 'a'
     with open(output_filename, of_mode) as of:
-        for atom in _aspify(input_filename, process=atom_process):
+        for atom in _aspify(input_filename, atom_process, no_blank_nodes):
             of.write(atom)

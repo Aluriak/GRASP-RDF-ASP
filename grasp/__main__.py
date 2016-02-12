@@ -33,12 +33,14 @@ from . import sparql
 
 if __name__ == '__main__':
     args = docopt(__doc__)
-    keep_prev_asp = options['--append-asp']
+    keep_prev_asp = args['--append-asp']
+    no_blank_nodes = not args['--keep-blanks']
 
     if args['convert']:
         rdftoasp.file_to_file(args['<input_RDF_filename>'],
                               args['<output_filename>'],
-                              erase_previous_data=keep_prev_asp)
+                              erase_previous_data=keep_prev_asp,
+                              no_blank_nodes=no_blank_nodes)
 
     elif args['retrieve']:
         db_uri = args['<database_URI>']
