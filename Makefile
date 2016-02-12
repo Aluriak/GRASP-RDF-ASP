@@ -14,3 +14,13 @@ r:
 
 q:
 	python -m grasp query $(ASP_QUERY) $(ASP_DATABASE)
+
+t:
+	python3 test.py
+
+
+# verbose aliases
+test: t
+query: q
+convert: c
+retrieve: r
