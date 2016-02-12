@@ -7,7 +7,7 @@ Main API is rdffile_to_aspfile(3), and triplet_to_atom(1).
 import rdflib
 
 
-UNWANTED_CHARS = set("\"'\n\r")
+UNWANTED_CHARS = set("\"'\n\r\\")
 
 
 # Follows various private methods definitions
