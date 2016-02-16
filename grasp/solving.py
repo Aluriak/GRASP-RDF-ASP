@@ -9,7 +9,7 @@ from pyasp import asp
 
 
 ASP_GRINGO_OPTIONS = ''
-ASP_CLASP_OPTIONS  = ''
+ASP_CLASP_OPTIONS  = '--parallel-mode 4 split'
 
 
 def model_from(base_atoms, aspfiles, aspargs={},
