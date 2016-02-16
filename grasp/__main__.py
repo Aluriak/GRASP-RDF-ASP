@@ -68,6 +68,9 @@ if __name__ == '__main__':
     elif args['query']:
         file_data = args['<input_ASP_data>']
         file_query = args['<input_ASP_query>']
-        for idx, answer in enumerate(query.answers(file_query, file_data)):
+        answers = query.answers(file_query, file_data)
+        if len(answers) == 0:
+            print('No answers !')
+        for idx, answer in enumerate(answers):
             print('\nAnswer ' + str(idx) + ':')
             print('\t' + '\n\t'.join(sorted(answer)))
