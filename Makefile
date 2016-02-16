@@ -1,14 +1,30 @@
+# Directories
 DATA_DIR=data/
 QUERY_DIR=queries/
-RDF_DATABASE=$(DATA_DIR)owlapi.xrdf
-ASP_DATABASE=$(DATA_DIR)rdf.lp
-ASP_QUERY=$(QUERY_DIR)test.lp
-DB_URI=http://dbpedia.org/sparql
-SPARQL_QUERY=$(QUERY_DIR)test.rq
-KEEP_ASP_DB=--append-asp
-KEEP_BLANKS=--keep-blanks
 
-OPTIONS=$(KEEP_ASP_DB) $(KEEP_BLANKS)
+# Local databases
+ASP_DATABASE=$(DATA_DIR)rdf.lp
+RDF_DATABASE=$(DATA_DIR)owlapi.xrdf
+RDF_DATABASE=$(DATA_DIR)goa_ecoli-20150528-goUniprotUri.ttl
+#RDF_DATABASE=$(DATA_DIR)test.ttl
+
+# Queries
+ASP_QUERY=$(QUERY_DIR)test.lp
+SPARQL_QUERY=$(QUERY_DIR)test.rq
+
+ASP_QUERY=$(QUERY_DIR)goa_scoring.lp
+#SPARQL_QUERY=$(QUERY_DIR)goa_scoring.rq
+
+# Database uri (for retrieve routine)
+DB_URI=http://dbpedia.org/sparql
+
+# Grasp options
+#KEEP_ASP_DB=--keep-prev-asp
+#KEEP_BLANKS=--keep-blanks
+DECOMPOSE=--decompose
+NO_URI=--no-uri
+
+OPTIONS=$(KEEP_ASP_DB) $(KEEP_BLANKS) $(DECOMPOSE) $(NO_URI)
 
 
 c:
