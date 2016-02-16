@@ -36,8 +36,6 @@ def valid_query(query, expected_fields=commons.RDF_TRIPLET):
 
     """
     reg = re.compile(r"SELECT\s+\?" + "\s+\?".join(expected_fields))
-    # print(query, expected_fields)
-    # print(reg)
     return reg.search(query)
 
 
