@@ -1,0 +1,14 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix uniprot: <http://purl.uniprot.org/uniprot/> .
+@prefix go: <http://purl.obolibrary.org/obo/> .
+@prefix goavoc: <http://bio2rdf.org/goa_vocabulary:> .
+@prefix goares: <http://bio2rdf.org/goa_resource:> .
+@prefix taxon: <http://bio2rdf.org/taxonomy:> .
+
+uniprot:P0A776 goavoc:go-term go:GO_0050779 .
+goares:ecoli_0 goavoc:go-term go:GO_0050779 .
+goares:ecoli_0 goavoc:target go:P0A776 .
+
+uniprot:P0A776 goavoc:go-term go:GO_0034353 .
+goares:ecoli_1 goavoc:go-term go:GO_0034353 .
+goares:ecoli_1 goavoc:target go:P0A776 .
