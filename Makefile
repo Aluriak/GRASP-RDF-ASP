@@ -21,7 +21,7 @@ DB_URI=http://dbpedia.org/sparql
 # Grasp options
 #KEEP_ASP_DB=--keep-prev-asp
 #KEEP_BLANKS=--keep-blanks
-DECOMPOSE=--decompose
+#DECOMPOSE=--decompose
 NO_URI=--no-uri
 
 OPTIONS=$(KEEP_ASP_DB) $(KEEP_BLANKS) $(DECOMPOSE) $(NO_URI)
