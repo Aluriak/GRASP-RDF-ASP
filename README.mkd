@@ -94,4 +94,4 @@ or
 
 
 ## Licence
-[WTFPL](http://www.wtfpl.net/)
+GPL
