@@ -4,15 +4,13 @@
 
 
 % a protein is an object annotated by GOA
-protein(X):- triplet(X,_,_).
-protein(X):- triplet(_,_,X).
-
+protein(X):- entry(X,_,_).
 
 % choose ten proteins.
-10 { choosen(X): protein(X) } 10.
+1 { choosen(X): protein(X) } 3.
 
-% the score is the number of triplet where the choosen protein is the object.
-score(Protein,Score):- Score={triplet(Protein,_,_)} ; choosen(Protein).
+% the score is the number of entry where the choosen protein is the object.
+score(Protein,Score):- Score={entry(Protein,_,_)} ; choosen(Protein).
 
 % compute the total score of the choosen proteins.
 total_score(T):- T=#sum{S:score(X,S), choosen(X)}.
@@ -24,5 +22,5 @@ total_score(T):- T=#sum{S:score(X,S), choosen(X)}.
 % outputs.
 #show.
 #show choosen/1.
-#show score(P,S): choosen(P), score(P,S).
+#show score/2.
 #show total_score/1.
