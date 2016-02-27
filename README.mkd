@@ -71,18 +71,45 @@ This is perform with the `retrieve` API:
 
     python -m grasp retrieve http://dbpedia.org/sparql mysparqlquery.rq aspdatabase.lp
 
-Note that the SPARQL query must select particular variables:
+Note that the SELECT clause of the SPARQL query is used for data retrieving:
 
-    SELECT ?object ?relation ?subject
+    SELECT ?a ?b ?c ?d
     WHERE {
         ...
     }
 
-Where object, relation and subject describes a triplet that will be converted and pushed in the ASP database.
+Any tuple of a, b, c and d elements yielded by the sparql query will be pushed under the name `entry` in the ASP database.
+
+
+Its also possible to define the predicate name used for data with a constant value:
+
+    python -m grasp retrieve http://dbpedia.org/sparql mysparqlquery.rq aspdatabase.lp --atom-name='data'
+
+or a python file:
+
+    python -m grasp retrieve http://dbpedia.org/sparql mysparqlquery.rq aspdatabase.lp --atom-name=atoms.py
+
+where the python file *atoms.py* contains the following lines:
+
+    def atom_name(payload):
+        """Return the atom name, function to the data found in payload"""
+        if payload[0] == 'gene':
+            return 'gene_entry'
+        else:
+            return 'entry'
+
+In the API, this is performed as follow:
+
+    import grasp
+    from atoms import atom_name
+
+    grasp.retrieve('http://dbpedia.org/sparql', './mysparqlquery.rq', './aspdatabase.lp',
+                   atom_name=atom_name)
+
 
 
 ## Other detail
-CLI == API (with different naming, although)
+CLI and API can perform almost the same treatments ; the latter is more complete.
 
 For help and options on the package:
 
@@ -91,6 +118,14 @@ For help and options on the package:
 or
 
     make help
+
+or
+
+    import grasp
+    help(grasp)
+    help(grasp.convert)
+    help(grasp.retrieve)
+    help(grasp.query)
 
 
 ## Licence
