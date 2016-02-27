@@ -23,8 +23,13 @@ DB_URI=http://dbpedia.org/sparql
 #KEEP_BLANKS=--keep-blanks
 #DECOMPOSE=--decompose
 NO_URI=--no-uri
+#ATOM_NAME=--atom-name='custom_predicate_name'
 
-OPTIONS=$(KEEP_ASP_DB) $(KEEP_BLANKS) $(DECOMPOSE) $(NO_URI)
+# ASP options
+#GRINGO_OPTIONS=--gringo-options=''
+CLASP_OPTIONS=--clasp-options='--parallel-mode 2 --configuration=frumpy'
+
+OPTIONS=$(KEEP_ASP_DB) $(KEEP_BLANKS) $(DECOMPOSE) $(NO_URI) $(ATOM_NAME) $(GRINGO_OPTIONS) $(CLASP_OPTIONS)
 
 
 c:
